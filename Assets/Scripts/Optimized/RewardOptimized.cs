@@ -7,6 +7,8 @@ public class RewardOptimized : MonoBehaviour
     //! We get the GameController instance to update the score
     private GameControllerOptimized GC => GameControllerOptimized.Instance;
 
+    public ParticleSystem explosion;
+
     void OnTriggerEnter(Collider hit)
     {
         if(hit.tag == "Player")
@@ -17,6 +19,8 @@ public class RewardOptimized : MonoBehaviour
             if(hit.TryGetComponent<AICharacterOptimized>(out AICharacterOptimized character)){
                 character.CheckCube();
             }
+
+            Instantiate(explosion, transform.position, Quaternion.identity); //! Add simple explosion
 
             Destroy(gameObject);
         }
