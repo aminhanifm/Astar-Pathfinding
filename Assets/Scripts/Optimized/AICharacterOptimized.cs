@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Cinemachine;
 
 public class AICharacterOptimized : MonoBehaviour
@@ -19,6 +20,7 @@ public class AICharacterOptimized : MonoBehaviour
     private float closeDistance = 0.05f;
     public float speed = 5;
     public bool isMoving;
+    public UnityEvent OnCubeNotFound;
 
     void Awake()
     {
@@ -42,7 +44,8 @@ public class AICharacterOptimized : MonoBehaviour
     //! Function to check if there any cube available
     public void CheckCube(){
         if(GC.Rewards.Count == 0){
-            UI.DisplayWinText();
+            // UI.DisplayWinText();
+            OnCubeNotFound?.Invoke();
         } else {
             //! We look for the nearest reward
             Transform nearestCube = GC.Rewards.OrderBy(rw => (transform.position - rw.transform.position).sqrMagnitude).First().transform;
@@ -82,5 +85,13 @@ public class AICharacterOptimized : MonoBehaviour
         // }
         isMoving = true;
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+    }
+
+    private void OnEnable() {
+        OnCubeNotFound.AddListener(UI.DisplayWinText);
+    }
+
+    private void OnDisable() {
+        OnCubeNotFound.RemoveListener(UI.DisplayWinText);
     }
 }
