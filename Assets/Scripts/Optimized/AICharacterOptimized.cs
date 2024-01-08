@@ -15,8 +15,6 @@ public class AICharacterOptimized : MonoBehaviour
     private Vector3 targetPosition;
     //! We use cinemachine for target follow
     private CinemachineVirtualCamera vCam;
-    //! We store Astar class on awake
-    private AstarPathFinding astar;
     private float closeDistance = 0.05f;
     public float speed = 5;
     public bool isMoving;
@@ -26,7 +24,6 @@ public class AICharacterOptimized : MonoBehaviour
     {
         targetPosition = transform.position;
         vCam = FindObjectOfType<CinemachineVirtualCamera>();
-        astar = FindObjectOfType<AstarPathFinding>();
     }
 
     //! We set follow and lookat on cinemachine to the AI 
@@ -52,7 +49,7 @@ public class AICharacterOptimized : MonoBehaviour
 
             Vector3 rewardPosition = nearestCube.position;
 
-            Queue<Vector3> queuePath = astar.GetPath(transform.position, rewardPosition);
+            Queue<Vector3> queuePath = AstarPathFinding.GetPath(transform.position, rewardPosition);
             SetPath(queuePath);
         }
     }    

@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class GameField : MonoBehaviour
 {
+    public static GameField Instance {get; private set;}
     public Cell[,] cells;
     public GameObject cellPrefab;
     public Material blockMaterial;
     public Material unblockMaterial;
     public GameObject aiPrefab;
     public GameObject rewardPrefab;
+
+    private void Awake() {
+        Instance = this;
+    }
 
     public void InitGameField(int width, int height)
     {
@@ -20,12 +26,12 @@ public class GameField : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 GameObject cell = Instantiate(cellPrefab);
-                Vector3 cellPosition = GetCellPosition(i, j);
+                Vector3 cellPosition = AstarPathFinding.GetCellPosition(i, j);
                 cells[i, j] = new Cell()
                 {
                     x = i,
                     y = j,
-                    position = GetCellPosition(i, j),
+                    position = AstarPathFinding.GetCellPosition(i, j),
                     cellObject = cell
                 };
                 cell.transform.position = cellPosition;
@@ -51,27 +57,16 @@ public class GameField : MonoBehaviour
         return cells[x, y].isBlocked;
     }
 
-    public Vector3 GetCellPosition(int x,int y)
-    {
-        return new Vector3(x,0, y);
-    }
-
-    public void GetCellCoordinate(Vector3 pos, out int x, out int y)
-    {
-        x = (int)(pos.x);
-        y = (int)(pos.z);
-    }
-
     public void InitAICharacter(int x,int y)
     {
         GameObject ai = Instantiate(aiPrefab);
-        ai.transform.position = GetCellPosition(x, y);
+        ai.transform.position = AstarPathFinding.GetCellPosition(x, y);
     }
 
     public GameObject CreateReward(int x,int y)
     {
         GameObject reward = Instantiate(rewardPrefab);
-        reward.transform.position = GetCellPosition(x, y);
+        reward.transform.position = AstarPathFinding.GetCellPosition(x, y);
         return reward;
     }
 }

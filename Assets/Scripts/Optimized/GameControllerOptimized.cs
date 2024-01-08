@@ -115,7 +115,7 @@ public class GameControllerOptimized : MonoBehaviour
 
         AICharacterOptimized aiCharacter = FindObjectOfType<AICharacterOptimized>();
 
-        Queue<Vector3> queuePath = FindObjectOfType<AstarPathFinding>().GetPath(aiCharacter.transform.position, rewardPosition);
+        Queue<Vector3> queuePath = AstarPathFinding.GetPath(aiCharacter.transform.position, rewardPosition);
 
         aiCharacter.SetPath(queuePath);
     }
